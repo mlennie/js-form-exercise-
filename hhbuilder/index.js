@@ -12,7 +12,8 @@ function serialize() {
 }
 
 function dataValid(data) {
-  return data && data.age && +data.age > 0 && data.rel && data.rel.length > 0;
+  return data && data.age && +data.age != NaN &&
+         +data.age > 0 && data.rel && data.rel.length > 0;
 }
 
 function refreshList() {
@@ -38,8 +39,8 @@ function newMemberSubmit(e) {
     familyMembers.push(data);
     refreshList();
   } else {
-    var message = "Data is not valid. Age is required and greater than 0." +
-                  " Relationship is also required";
+    var message = "Data is not valid. Age is required and must be a number " +
+                  "greater than 0. Relationship is also required";
     alert(message);
   }
 
