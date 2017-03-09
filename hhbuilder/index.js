@@ -1,9 +1,9 @@
 var familyMembers = [];
 
-function serialize(e) {
+function serialize() {
   var controls = ['input','select'],data = {},inputs,c,i;
   for (c = 0; c < controls.length; c++) {
-    inputs = [].slice.call(e.target.getElementsByTagName(controls[c]));
+    inputs = [].slice.call(document.forms[0].getElementsByTagName(controls[c]));
     for (i = 0; i < inputs.length; i++) {
       data[inputs[i].name] = inputs[i].value;
     }
@@ -15,8 +15,9 @@ function dataValid(data) {
   return data.age && +data.age > 0 && data.rel && data.rel.length > 0;
 }
 
-function newMemberSubmit(form,e) {
-  var data = serialize(e);
+function newMemberSubmit() {
+debugger;
+  var data = serialize();
   if (dataValid(data)) {
     familyMembers.push(data);
   } else {
@@ -29,3 +30,10 @@ debugger;
 
 
 }
+
+function addClickListener() {
+  document.getElementsByClassName("add")[0].addEventListener("click", newMemberSubmit);
+}
+
+addClickListener();
+
