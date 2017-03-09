@@ -49,12 +49,14 @@ function newMemberSubmit(e) {
   }
 
   e.preventDefault()
-  e.stopPropagation();
 }
 
 function handleSubmit(e) {
-    e.preventDefault()
-    e.stopPropagation();
+  var json = JSON.stringify(familyMembers,null,4);
+  var debug = document.getElementsByClassName('debug')[0];
+  debug.innerHTML = "<code>" + json + "</code>";
+  debug.style.display = "block";
+  e.preventDefault()
 }
 
 function removeMember(e) {
