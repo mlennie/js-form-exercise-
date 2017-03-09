@@ -5,7 +5,11 @@ function serialize() {
   for (c = 0; c < controls.length; c++) {
     inputs = [].slice.call(document.forms[0].getElementsByTagName(controls[c]));
     for (i = 0; i < inputs.length; i++) {
-      data[inputs[i].name] = inputs[i].value;
+      if (inputs[i].type == "checkbox") {
+        data[inputs[i].name] = inputs[i].checked;
+      } else {
+        data[inputs[i].name] = inputs[i].value;
+      }
     }
   }
   return data;
