@@ -15,14 +15,10 @@ function dataValid(data) {
   return data.age && +data.age > 0 && data.rel && data.rel.length > 0;
 }
 
-function addMemberToList(data) {
-  familyMembers.push(data);
-}
-
 function newMemberSubmit(form,e) {
   var data = serialize(e);
   if (dataValid(data)) {
-    addMemberToList(data);
+    familyMembers.push(data);
   } else {
     var message = "Data is not valid. Age is required and greater than 0." +
                   " Relationship is also required";
