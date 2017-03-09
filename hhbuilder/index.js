@@ -25,9 +25,11 @@ function refreshList() {
     age = "<p>Age: " + member.age + "</p>";
     rel = "<p>Relationship: " + member.rel + "</p>";
     smoker = "<p>Smoker: " + member.smoker + "</p>";
-    html += "<li>"+age+rel+smoker+"</li><hr>";
+    remove = "<button class=\"remove\" id=\""+String(i)+"\">Remove</button>";
+    html += "<li>"+age+rel+smoker+remove+"</li><hr>";
     list.insertAdjacentHTML('beforeend', html);
   }
+  removeClickListener();
 }
 
 function newMemberSubmit(e) {
@@ -45,9 +47,15 @@ function newMemberSubmit(e) {
   e.stopPropagation();
 }
 
-function handleSubmit() {
+function handleSubmit(e) {
     e.preventDefault()
     e.stopPropagation();
+}
+
+function removeMember(e) {
+  var index = +e.target.id;
+  familyMembers.splice(index, 1);
+  refreshList();
 }
 
 function addClickListener() {
@@ -58,6 +66,13 @@ function addClickListener() {
 function submitClickListener() {
   document.forms[0]
           .addEventListener("submit", handleSubmit);
+}
+
+function removeClickListener() {
+  var elements = document.getElementsByClassName("remove");
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener("click", removeMember);
+  }
 }
 
 submitClickListener();
