@@ -47,7 +47,6 @@ function newMemberSubmit(e) {
                   "greater than 0. Relationship is also required";
     alert(message);
   }
-
   e.preventDefault()
 }
 
@@ -84,4 +83,3 @@ function removeClickListener() {
 
 submitClickListener();
 addClickListener();
-
