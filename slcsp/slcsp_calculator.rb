@@ -54,13 +54,18 @@ class SlcspCalculator
 
   def self.find_rates_by_county_codes_or_rate_areas rate_and_counties
     CSV.foreach("./plans.csv") do |row|
-      rate_and_counties[:county_codes].each do |county|
-
+      if rate_and_counties[:rate_area] == row[4]
+        rate_and_counties[:rate] = row[3]
       end
+      # said can find by counties but plans.csv does not have counties
+      #rate_and_counties[:county_codes].each do |county|
+        #if row[]
+      #end
     end
+    return rate_and_counties
   end
 
-  def self.match_zipcodes
+  def self.find_rates
     new_zips = []
     CSV.foreach("./slcsp.csv") do |row|
       rate_areas_and_county_codes = self.find_rate_areas_and_county_codes row[0]
@@ -72,6 +77,8 @@ class SlcspCalculator
         county_codes = rate_areas_and_county_codes[:county_codes]
         new_row = { zipcode: row[0], rate_area: rate_areas[0], county_codes: county_codes }
         new_row = self.find_rates_by_county_codes_or_rate_areas new_row
+        new_row.delete(:county_codes)
+        new_row.delete(:rate_area)
       end
       puts new_row
       new_zips << new_row
@@ -79,12 +86,6 @@ class SlcspCalculator
     puts new_zips
   end
 
-  def self.parse_slcsp
-    #zipcodes_array = self.parse_zipcodes_csv
-    #rate_areas_array = self.parse_rate_areas_csv
-    #plans_array = self.parse_plans_csv
-    matched_zipcodes = self.match_zipcodes
-  end
 end
 
-SlcspCalculator.parse_slcsp
+SlcspCalculator.find_rates
