@@ -1,12 +1,25 @@
 require 'csv'
-require 'yaml'
 
 class SlcspCalculator
 
-  def self.parse_slcsp
+  def self.get_zipcodes
+    rows = []
     CSV.foreach("./slcsp.csv") do |row|
-      puts YAML.load(row.inspect)[0]
+      rows << {zipcode: row[0]}
+
+      zips = CSV.table("./zips.csv", converters: :all)
+      pulled_zip_row = zips.find  do |zip_row|
+            zip_row.field(:zipcode) == row[0]
+      end
+
+      puts pulled_zip_row
+
     end
+    rows
+  end
+
+  def self.parse_slcsp
+    self.get_zipcodes
   end
 end
 
