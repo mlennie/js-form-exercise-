@@ -54,10 +54,8 @@ def find_rate_by_rate_area rate_area
     # add rate if conditions match
     rates << row[3] if conditions_match_for_rate(row, rate_area)
   end
-  # get unique and sort
-  new_rates = rates.uniq.sort_by(&:to_f)
-  # return second lowest
-  new_rates[1]
+  # get unique, sort and return second lowest
+  rates.uniq.sort_by(&:to_f)[1]
 end
 
 def find_rate_for_single_zipcode row
@@ -67,8 +65,7 @@ def find_rate_for_single_zipcode row
   # if more than one rate_area, rate should be blank
   return new_row if rate_areas.length > 1
   # find second lowest unique silver rate for single combined rate area
-  rate = find_rate_by_rate_area rate_areas[0]
-  new_row[:rate] = rate if rate && rate.length > 0
+  new_row[:rate] = find_rate_by_rate_area rate_areas[0]
   puts "rate processed:"
   puts new_row
   new_row
