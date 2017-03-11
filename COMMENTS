@@ -1,0 +1,4 @@
+# said can find by counties but plans.csv does not have counties to match
+
+# in readme, rate_area is defined as state, number: NY 1, IL 4 although in the zips.csv the column entitled rate_area is only a number. So to confirm, when using rate_area to find rate, I should be using state and rate_area combined or just rate_area?
+
