@@ -18,6 +18,19 @@ require 'csv'
 # row[3]: rate
 # row[4]: rate_area
 
+def create_csv_with_rates hashes
+  # generate complete csv
+  column_names = hashes.first.keys
+  s=CSV.generate do |csv|
+    csv << column_names
+    hashes.each do |x|
+      csv << x.values
+    end
+  end
+  File.write('complete_slcsp.csv', s)
+  puts "new complete_slcsp.csv file created with zipcodes and rates"
+end
+
 def find_rate_areas zipcode
   combined_rate_areas = []
   CSV.foreach("./zips.csv") do |row|
@@ -43,7 +56,6 @@ def find_rate_by_rate_area rate_area
   end
   # get unique and sort
   new_rates = rates.uniq.sort_by(&:to_f)
-  #puts new_rates
   # return second lowest
   new_rates[1]
 end
@@ -60,19 +72,6 @@ def find_rate_for_single_zipcode row
   puts "rate processed:"
   puts new_row
   new_row
-end
-
-def create_csv_with_rates hashes
-  # generate complete csv
-  column_names = hashes.first.keys
-  s=CSV.generate do |csv|
-    csv << column_names
-    hashes.each do |x|
-      csv << x.values
-    end
-  end
-  File.write('complete_slcsp.csv', s)
-  puts "new complete_slcsp.csv file created with zipcodes and rates"
 end
 
 def find_rates_for_all
