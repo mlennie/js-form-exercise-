@@ -52,11 +52,20 @@ class SlcspCalculator
     return {rate_areas: rate_areas, county_codes: county_codes}
   end
 
+  def self.find_slcsp_from_rates rates
+  end
+
   def self.find_rates_by_county_codes_or_rate_areas rate_and_counties
+    rates = []
     CSV.foreach("./plans.csv") do |row|
-      if rate_and_counties[:rate_area] == row[4]
-        rate_and_counties[:rate] = row[3]
+      if rate_and_counties[:rate_area] == row[4] &&
+         row[2] == "Silver" &&
+         row[3] && row[3].length > 0
+        rates << row[3]
       end
+      rate_and_counties[:rates] = rates.sort_by(&:to_f)
+      rate_and_counties[:rate] = rate_and_counties[:rates][1]
+
       # said can find by counties but plans.csv does not have counties
       #rate_and_counties[:county_codes].each do |county|
         #if row[]
