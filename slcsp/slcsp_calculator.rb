@@ -20,36 +20,11 @@ class SlcspCalculator
   # row[3]: rate
   # row[4]: rate_area
 
-  def self.parse_plans_csv
-    rows = []
-    CSV.foreach("./plans.csv") do |row|
-      hash = {
-        plan_id: row[0],
-        state: row[1],
-        metal_level: row[2],
-        rate: row[3],
-        rate_area: row[4]
-      }
-      rows << hash
-    end
-    rows
-  end
-
   def self.find_rate_areas zipcode
-    rate_areas = []
-    county_codes = []
-    states = []
     combined_rate_areas = []
-
     CSV.foreach("./zips.csv") do |row|
-      if row[0] == zipcode
-        rate_areas << row[4]
-        county_codes << row[2]
-        states << row[1]
-        combined_rate_areas << row[1] + "," + row[4]
-      end
+      combined_rate_areas << row[1] + "," + row[4] if row[0] == zipcode
     end
-
     return combined_rate_areas.uniq
   end
 
@@ -83,12 +58,25 @@ class SlcspCalculator
     new_row
   end
 
-  def self.find_rates_for_all
-    new_zips = []
-    CSV.foreach("./slcsp.csv") do |row|
-      new_zips << self.find_rate_for_single_zipcode row
+  def self.create_csv_with_rates hashes
+    column_names = hashes.first.keys
+    s=CSV.generate do |csv|
+      csv << column_names
+      hashes.each do |x|
+        csv << x.values
+      end
     end
-    puts new_zips
+    File.write('complete_slcsp.csv', s)
+  end
+
+  def self.find_rates_for_all
+    new_zips_with_rates = []
+    CSV.foreach("./slcsp.csv") do |row|
+      new_zips_with_rates << self.find_rate_for_single_zipcode(row)
+    end
+    puts new_zips_with_rates
+    new_zips_with_rates.shift
+    self.create_csv_with_rates new_zips_with_rates
   end
 
 end
