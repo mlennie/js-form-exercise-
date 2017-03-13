@@ -1,4 +1,10 @@
-# said can find by counties but plans.csv does not have counties to match
+The readme seemed to imply that you can find rates by counties but plans.csv does not have counties to match so I only relied on rate_areas to match zipcodes with rates.
 
-# in readme, rate_area is defined as state, number: NY 1, IL 4 although in the zips.csv the column entitled rate_area is only a number. So to confirm, when using rate_area to find rate, I should be using state and rate_area combined or just rate_area?
+Line from readme:
+"A ZIP Code can potentially be in more than one county. If the county can not be determined definitively by the ZIP Code, it may still be possible to determine the rate area for that ZIP Code."
 
+Running slcsp_calculator:
+ruby-2.3.3 was used to find rates
+To run, have ruby-2.3.3 installed, cd to slcsp directory in terminal and run `irb slcsp_calculator.rb` in terminal
+
+complete_slcsp.csv is the name of the created csv file with both zipcode and rates.
