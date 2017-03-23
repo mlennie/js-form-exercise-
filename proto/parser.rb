@@ -4,48 +4,57 @@
 # How many autopays were ended?
 # What is balance of user ID 2456938384156277127?
 
-str = IO.read("./txnlog.dat").force_encoding("BINARY")
+str = IO.read("./txnlog.dat") #.force_encoding("BINARY")
 io = StringIO.new(str)
-#print io
+
+total_debit_amount = 0.00000000000
+total_credit_amount = 0.0000000000
+autopays_started = 0
+autopays_ended = 0
+user_balance = 0.0000000000
+
 # parse header
 magic_string = io.read(4)
 version = io.read(1).unpack("c")[0]
 num_of_records = io.read(4).unpack("N")[0]
 
-
-#puts io.inspect
-#parse records
+# parse records
 (0...num_of_records).each do |record|
  type_enum = io.read(1)
- puts type_enum
- puts type_enum == "\x00"
+ puts type_enum.unpack("c")[0]
  timestamp = io.read(4).unpack("N")[0]
  puts timestamp
- uid = io.read(8).unpack("q")[0]
+ uid = io.read(8).unpack("Q")[0]
  puts uid
- puts "YAYYYY!"
+ puts "2456938384156277127"
 
- #puts type_enum
- #puts type_enum == "/x00"
- #puts "YAYYYY!"
- break
- #puts io.read(4)
- #puts io.read(8).unpack("l")
- #puts "**********************************"
+ if type_enum == "\x00" || type_enum == "\x01"
+   amount = io.read(8).unpack("G")[0]
+   puts "amount"
+   puts amount
+
+   puts "Equals id 2456938384156277127?"
+   if uid == 2456938384156277127
+     user_balance += amount
+     puts "YYYYYYYYYYYYYYEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!"
+   end
+ end
+
+ if type_enum == "\x00" # debit
+   total_debit_amount += amount
+ elsif type_enum == "\x01" # credit
+   total_credit_amount += amount
+ elsif type_enum == "\x02" # auto started
+   autopays_started += 1
+ elsif type_enum == "\x03" # auto ended
+   autopays_ended += 1
+ end
+
+ puts "**********************************"
 end
 
-#io = File.open("./txnlog.dat",'rb')
-#print io.bytes.to_a
-#puts io.inspect
-#puts '"' + io.each_byte.map { |b| '\x%02x' % b }.join + '"'
-# print io.unpack("n")
-#len = io.read(4) #.unpack("V")
-#puts len.inspect
-#version = io.read(1)
-#puts version
-#io.seek 2
-#num_records = io.read(4)
-#puts num_records
-
-#name = io.read(len)
-#puts name
+puts total_debit_amount
+puts total_credit_amount
+puts autopays_started
+puts autopays_ended
+puts user_balance
