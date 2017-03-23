@@ -1,10 +1,26 @@
+
 The readme seemed to imply that you can find rates by counties but plans.csv does not have counties to match so I only relied on rate_areas to match zipcodes with rates.
 
 Line from readme:
 "A ZIP Code can potentially be in more than one county. If the county can not be determined definitively by the ZIP Code, it may still be possible to determine the rate area for that ZIP Code."
 
-Running slcsp_calculator:
+Slcsp:
 ruby-2.3.3 was used to find rates
 To run, have ruby-2.3.3 installed, cd to slcsp directory in terminal and run `irb slcsp_calculator.rb` in terminal
 
 complete_slcsp.csv is the name of the created csv file with both zipcode and rates.
+
+Proto:
+ruby-2.3.3 was used to find results
+To run, have ruby-2.3.3 installed, cd to proto directory in terminal and run `irb parser.rb` in terminal
+
+Results are outputed in terminal at end of script
+
+Questions/Comments
+
+In documentation: "The header contains the canonical information about how the records should be processed."? is there hidden information in the headers that I need to look for? I found no useful information in headers except for number of records.
+
+Header record number shows 71 when there are actually 72 records. Should amounts be calculated for 71 or all 72 records?
+
+no record has uid 2456938384156277127. Trick question or should there be some? I used ruby unpack method with Q argument. Ruby unpack documentation: http://www.rubydoc.info/stdlib/core/String:unpack
+

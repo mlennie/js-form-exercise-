@@ -4,7 +4,7 @@
 # How many autopays were ended?
 # What is balance of user ID 2456938384156277127?
 
-str = IO.read("./txnlog.dat") #.force_encoding("BINARY")
+str = IO.read("./txnlog.dat").force_encoding("BINARY")
 io = StringIO.new(str)
 
 total_debit_amount = 0.00000000000
@@ -19,22 +19,22 @@ version = io.read(1).unpack("c")[0]
 num_of_records = io.read(4).unpack("N")[0]
 
 # parse records
-(0...num_of_records).each do |record|
+num_of_records.times do |i|
  type_enum = io.read(1)
- puts type_enum.unpack("c")[0]
  timestamp = io.read(4).unpack("N")[0]
- puts timestamp
  uid = io.read(8).unpack("Q")[0]
- puts uid
- puts "2456938384156277127"
+
+ # log values
+ puts "type enum: " + type_enum.unpack("c")[0].to_s
+ puts "timestamp: " + timestamp.to_s
+ puts "uid: " + uid.to_s
 
  if type_enum == "\x00" || type_enum == "\x01"
    amount = io.read(8).unpack("G")[0]
-   puts "amount"
-   puts amount
+   puts "amount: " + amount.to_s
 
-   puts "Equals id 2456938384156277127?"
    if uid == 2456938384156277127
+     puts "Equals id 2456938384156277127"
      user_balance += amount
      puts "YYYYYYYYYYYYYYEEEEEEEEEEEEEEEESSSSSSSSSSSSSSSSSSSS!!!!!!!!!!!!!!!"
    end
@@ -53,8 +53,8 @@ num_of_records = io.read(4).unpack("N")[0]
  puts "**********************************"
 end
 
-puts total_debit_amount
-puts total_credit_amount
-puts autopays_started
-puts autopays_ended
-puts user_balance
+puts "total debit amount: " + total_debit_amount.to_s
+puts "total credit amount: " + total_credit_amount.to_s
+puts "number of autopays sarted: " + autopays_started.to_s
+puts "number of autopays_ended: " + autopays_ended.to_s
+puts "user balance with uid 2456938384156277127: " + user_balance.to_s
